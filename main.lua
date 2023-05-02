@@ -46,6 +46,16 @@ function love.update(dt)
     ball.y = ball.y + (ball.speed_y * dt)
   end
 
+  --X-axis collisions
+  if ball.x > screen_width then 
+    ball.speed_x = 0 - ball.speed_x
+    ball.x = screen_width
+  end
+  if ball.x < 0 then 
+    ball.speed_x = 0 - ball.speed_x
+    ball.x = 0
+  end
+
 end
 
 function love.draw()
