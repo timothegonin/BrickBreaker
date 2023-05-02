@@ -38,6 +38,12 @@ end
 function love.update(dt)
   pad.x = love.mouse.getX()
 
+--[[ 
+  ┌─────────────────────────────────────────────────────────────────────────────┐
+  │   BALL - strat                                                              │
+  └─────────────────────────────────────────────────────────────────────────────┘
+ ]]
+  --ball movements
   if ball.hooked == true then
     ball.x = pad.x
     ball.y = pad.y - pad.height / 2 - ball.radius
@@ -63,6 +69,11 @@ function love.update(dt)
   if ball.y > screen_height then 
     Start()
   end
+--[[ 
+  ┌─────────────────────────────────────────────────────────────────────────────┐
+  │   BALL - end                                                                │
+  └─────────────────────────────────────────────────────────────────────────────┘
+ ]]
 
 end
 
