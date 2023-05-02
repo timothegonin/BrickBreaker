@@ -55,6 +55,14 @@ function love.update(dt)
     ball.speed_x = 0 - ball.speed_x
     ball.x = 0
   end
+  --Y-axis collision
+  if ball.y < 0 then
+    ball.speed_y = 0 - ball.speed_y
+    ball.y = 0
+  end
+  if ball.y > screen_height then 
+    Start()
+  end
 
 end
 
