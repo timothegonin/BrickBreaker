@@ -45,11 +45,13 @@ function love.update(dt)
   --mouse movements
   pad.x = love.mouse.getX()
 
-  local posCollisionPad = pad.y - (pad.height/2) - ball.radius
+  --catch pad and ball collision
+  local posCollisionPad = pad.y - (pad.height / 2) - ball.radius
 
+  --ball and pad, X-axis collision
   if ball.y > posCollisionPad then 
     local dist = math.abs(pad.x - ball.x)
-    if dist < pad.width/2 then 
+    if dist < pad.width / 2 then 
       ball.speed_y = 0 - ball.speed_y
       ball.y = posCollisionPad
     end
