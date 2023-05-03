@@ -15,8 +15,23 @@ ball.hooked = false
 ball.speed_x = 0
 ball.speed_y = 0
 
+local brick = {}
+local level = {}
+
+
 function Start()
   ball.hooked = true
+
+  level = {}
+  local line, column
+
+  for line = 1, 6 do 
+    level[line] = {}
+    for column = 1, 15 do 
+      level[line][column] = 1
+    end
+  end
+
 end
 
 -- ZeroBraneStudio debug
@@ -26,6 +41,9 @@ function love.load()
   
   screen_width = love.graphics.getWidth()
   screen_height = love.graphics.getHeight()
+
+  brick.height = 25
+  brick.width = screen_width / 15
 
   print("screen width",screen_width)
   print('screen height', screen_height)
@@ -102,6 +120,20 @@ function love.update(dt)
 end
 
 function love.draw()
+  local line, column
+  local brick_x, brick_y = 0, 0
+
+  for line = 1, 6 do 
+    brick_x = 0
+    for column = 1, 15 do 
+      if level[line][column] == 1 then
+        love.graphics.rectangle('fill', brick_x + 1 ,brick_y + 1, brick.width - 2, brick.height -2)
+      end
+      brick_x = brick_x + brick.width
+    end
+    brick_y = brick_y + brick.height
+  end
+
   love.graphics.rectangle('fill', pad.x - (pad.width / 2 ), pad.y - (pad.height / 2 ), pad.width, pad.height)
   love.graphics.circle('fill', ball.x, ball.y, ball.radius)
 end
