@@ -20,8 +20,14 @@ local level = {}
 
 
 function Start()
+  pad.y = screen_height - (pad.height / 2)
+
+  brick.height = 25
+  brick.width = screen_width / 15
+
   ball.hooked = true
 
+  --level's bricks init
   level = {}
   local line, column
 
@@ -37,24 +43,15 @@ end
 -- ZeroBraneStudio debug
 -- if arg[#arg] == "-debug" then require("mobdebug").start() end
 
-function love.load()
-  
+function love.load()  
   screen_width = love.graphics.getWidth()
   screen_height = love.graphics.getHeight()
-
-  brick.height = 25
-  brick.width = screen_width / 15
-
-  print("screen width",screen_width)
-  print('screen height', screen_height)
-
-  pad.y = screen_height - (pad.height / 2)
+  -- print("screen width",screen_width)
+  -- print('screen height', screen_height)
   Start()
-
 end
 
 function love.update(dt)
-
 --[[ 
   ┌─────────────────────────────────────────────────────────────────────────────┐
   │   PAD - start                                                               │
@@ -108,15 +105,15 @@ function love.update(dt)
     ball.speed_y = 0 - ball.speed_y
     ball.y = 0
   end
+  --player loosing
   if ball.y > screen_height then 
-    Start()
+    ball.hooked = true
   end
 --[[ 
   ┌─────────────────────────────────────────────────────────────────────────────┐
   │   BALL - end                                                                │
   └─────────────────────────────────────────────────────────────────────────────┘
  ]]
-
 end
 
 function love.draw()
@@ -147,8 +144,6 @@ function love.mousepressed(x,y,n)
 end
 
 function love.keypressed(key)
-  
-  print(key)
-  
+  print(key) 
 end
   
