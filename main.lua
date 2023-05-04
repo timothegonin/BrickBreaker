@@ -15,28 +15,43 @@ ball.hooked = false
 ball.speed_x = 0
 ball.speed_y = 0
 
+local brick = {}
+local level = {}
+
+
 function Start()
+  pad.y = screen_height - (pad.height / 2)
+
+  brick.height = 25
+  brick.width = screen_width / 15
+
   ball.hooked = true
+
+  --level's bricks init
+  level = {}
+  local line, column
+
+  for line = 1, 6 do 
+    level[line] = {}
+    for column = 1, 15 do 
+      level[line][column] = 1
+    end
+  end
+
 end
 
 -- ZeroBraneStudio debug
 -- if arg[#arg] == "-debug" then require("mobdebug").start() end
 
-function love.load()
-  
+function love.load()  
   screen_width = love.graphics.getWidth()
   screen_height = love.graphics.getHeight()
-
-  print("screen width",screen_width)
-  print('screen height', screen_height)
-
-  pad.y = screen_height - (pad.height / 2)
+  -- print("screen width",screen_width)
+  -- print('screen height', screen_height)
   Start()
-
 end
 
 function love.update(dt)
-
 --[[ 
   ┌─────────────────────────────────────────────────────────────────────────────┐
   │   PAD - start                                                               │
@@ -76,6 +91,18 @@ function love.update(dt)
     ball.y = ball.y + (ball.speed_y * dt)
   end
 
+  --ball location
+  local column = math.floor(ball.x / brick.width) + 1
+  local line = math.floor(ball.y / brick.height) + 1
+
+  --ball and brick collision
+  if line >= 1 and line <= #level and column >= 1 and column <= 15 then
+    if level[line][column] == 1 then 
+      ball.speed_y = 0 - ball.speed_y
+      level[line][column] = 0
+    end
+  end
+
   --X-axis collisions
   if ball.x > screen_width then 
     ball.speed_x = 0 - ball.speed_x
@@ -90,18 +117,32 @@ function love.update(dt)
     ball.speed_y = 0 - ball.speed_y
     ball.y = 0
   end
+  --player loosing
   if ball.y > screen_height then 
-    Start()
+    ball.hooked = true
   end
 --[[ 
   ┌─────────────────────────────────────────────────────────────────────────────┐
   │   BALL - end                                                                │
   └─────────────────────────────────────────────────────────────────────────────┘
  ]]
-
 end
 
 function love.draw()
+  local line, column
+  local brick_x, brick_y = 0, 0
+
+  for line = 1, 6 do 
+    brick_x = 0
+    for column = 1, 15 do 
+      if level[line][column] == 1 then
+        love.graphics.rectangle('fill', brick_x + 1 ,brick_y + 1, brick.width - 2, brick.height -2)
+      end
+      brick_x = brick_x + brick.width
+    end
+    brick_y = brick_y + brick.height
+  end
+
   love.graphics.rectangle('fill', pad.x - (pad.width / 2 ), pad.y - (pad.height / 2 ), pad.width, pad.height)
   love.graphics.circle('fill', ball.x, ball.y, ball.radius)
 end
@@ -115,8 +156,6 @@ function love.mousepressed(x,y,n)
 end
 
 function love.keypressed(key)
-  
-  print(key)
-  
+  print(key) 
 end
   
