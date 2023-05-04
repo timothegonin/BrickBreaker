@@ -91,6 +91,18 @@ function love.update(dt)
     ball.y = ball.y + (ball.speed_y * dt)
   end
 
+  --ball location
+  local column = math.floor(ball.x / brick.width) + 1
+  local line = math.floor(ball.y / brick.height) + 1
+
+  --ball and brick collision
+  if line >= 1 and line <= #level and column >= 1 and column <= 15 then
+    if level[line][column] == 1 then 
+      ball.speed_y = 0 - ball.speed_y
+      level[line][column] = 0
+    end
+  end
+
   --X-axis collisions
   if ball.x > screen_width then 
     ball.speed_x = 0 - ball.speed_x
